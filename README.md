@@ -7,6 +7,7 @@ A responsive, multi-page React and Vite website using MBNP's supplied brand, tea
 - `index.html` — Home
 - `about.html` — About
 - `expertise.html` — Expertise
+- `collaborations.html` — Collaborations
 - `people.html` — People
 - `contact.html` — Contact
 
@@ -30,7 +31,7 @@ The production files are generated in `dist/`.
 
 ## Images and client logos
 
-The website currently uses the supplied hero image and all seven team portraits. The supplied `cl-*` and `Logo-*` files were not published as clients because they are generic template marks such as Logoipsum, Umbrella, and Nextmove. Approved client logos can be added later without changing the page structure.
+The website uses the supplied hero image, all seven team portraits, and the supplied `Logo-*` artwork in a dedicated Collaborations page and a prominent Home-page logo grid. The `cl-*` Logoipsum placeholders remain unused.
 
 ## Insights
 

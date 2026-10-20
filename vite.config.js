@@ -15,6 +15,7 @@ export default defineConfig({
         home: resolve(process.cwd(), 'index.html'),
         about: resolve(process.cwd(), 'about.html'),
         expertise: resolve(process.cwd(), 'expertise.html'),
+        collaborations: resolve(process.cwd(), 'collaborations.html'),
         people: resolve(process.cwd(), 'people.html'),
         contact: resolve(process.cwd(), 'contact.html'),
       },

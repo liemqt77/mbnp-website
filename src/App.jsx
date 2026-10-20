@@ -19,10 +19,21 @@ const team = [
   ['Rizky Nauveri Fauzi H, S.H.', 'Senior Associate', 'rizky-nauveri-fauzi-h.webp'],
 ]
 
+const collaborations = [
+  ['Umbrella', 'umbrella.png'],
+  ['Nextmove', 'nextmove.png'],
+  ['Inspire', 'inspire.png'],
+  ['Luminous', 'luminous.png'],
+  ['Waveless', 'waveless.png'],
+  ['Sitemark', 'sitemark.png'],
+  ['Vision', 'vision.png'],
+]
+
 const navigation = [
   ['home', 'Home', './index.html'],
   ['about', 'About', './about.html'],
   ['expertise', 'Expertise', './expertise.html'],
+  ['collaborations', 'Collaborations', './collaborations.html'],
   ['people', 'People', './people.html'],
   ['contact', 'Contact', './contact.html'],
 ]
@@ -31,14 +42,22 @@ function Arrow() { return <span aria-hidden="true">↗</span> }
 
 function Header({ page }) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     document.body.classList.toggle('menu-open', open)
     return () => document.body.classList.remove('menu-open')
   }, [open])
 
+  useEffect(() => {
+    const updateHeader = () => setScrolled(window.scrollY > 16)
+    updateHeader()
+    window.addEventListener('scroll', updateHeader, { passive: true })
+    return () => window.removeEventListener('scroll', updateHeader)
+  }, [])
+
   return (
-    <header className="header">
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <a className="logo" href="./index.html" aria-label="MBNP at Law home">
         <img src="./assets/mbnp-brandmark.svg" alt="Masdiyono, Bahri, Narayana & Partners" />
       </a>
@@ -89,17 +108,33 @@ function TeamCards({ limit }) {
   )
 }
 
+function CollaborationLogos({ compact = false }) {
+  return (
+    <div className={`collaboration-logos ${compact ? 'compact' : ''}`}>
+      {collaborations.map(([name, image]) => (
+        <div className="collaboration-logo" key={name}>
+          <img src={`./assets/collaborations/${image}`} alt={name} loading="lazy" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function Home() {
   return (
     <>
       <section className="home-hero">
         <div className="hero-copy">
+          <span className="hero-number">01 / MBNP</span>
           <p className="eyebrow">Independent counsel · Jakarta</p>
           <h1>Clear counsel for important decisions.</h1>
           <p>Strategic and practical legal support for businesses navigating Indonesia's evolving landscape.</p>
           <a className="button" href="./about.html">Discover MBNP <Arrow /></a>
         </div>
-        <div className="hero-photo"><img src="./assets/hero-legal.webp" alt="Legal professionals reviewing business documents" /></div>
+        <div className="hero-photo">
+          <img src="./assets/hero-legal.webp" alt="Legal professionals reviewing business documents" />
+          <div className="hero-caption"><span>Jakarta</span><span>Indonesia</span></div>
+        </div>
       </section>
 
       <section className="section intro-grid">
@@ -123,10 +158,12 @@ function Home() {
         </div>
       </section>
 
-      <section className="client-band">
-        <p className="eyebrow">Clients & collaborations</p>
-        <h2>Supporting domestic and international organisations with discretion.</h2>
-        <p>Official client identities will only be displayed with approval.</p>
+      <section className="section collaboration-home">
+        <div className="section-heading">
+          <div><p className="eyebrow">Collaborations</p><h2>Relationships built on trust.</h2></div>
+          <a className="text-link" href="./collaborations.html">Explore network <Arrow /></a>
+        </div>
+        <CollaborationLogos compact />
       </section>
 
       <section className="section">
@@ -180,6 +217,23 @@ function Expertise() {
   )
 }
 
+function Collaborations() {
+  return (
+    <>
+      <PageIntro eyebrow="Collaborations" title="Working together, moving forward." text="We value long-term professional relationships and collaboration shaped by clarity, responsiveness, and shared purpose." />
+      <section className="section collaboration-page">
+        <div className="collaboration-copy">
+          <p className="eyebrow">Selected network</p>
+          <h2>Organisations represented in the supplied MBNP assets.</h2>
+          <p>Each relationship is approached with discretion and an understanding of the commercial context surrounding the matter.</p>
+        </div>
+        <CollaborationLogos />
+      </section>
+      <ContactCallout />
+    </>
+  )
+}
+
 function People() {
   return (
     <>
@@ -219,9 +273,32 @@ function ContactCallout() {
   )
 }
 
-const pages = { home: Home, about: About, expertise: Expertise, people: People, contact: Contact }
+const pages = { home: Home, about: About, expertise: Expertise, collaborations: Collaborations, people: People, contact: Contact }
 
 export default function App({ page = 'home' }) {
   const CurrentPage = pages[page] || Home
+  useEffect(() => {
+    const elements = document.querySelectorAll('main section > *, .team-card, .service-preview article, .service-grid article, .collaboration-logo')
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('visible'))
+      return undefined
+    }
+
+    elements.forEach((element, index) => {
+      element.classList.add('reveal')
+      element.style.setProperty('--reveal-delay', `${(index % 4) * 70}ms`)
+    })
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' })
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [page])
+
   return <><Header page={page} /><main><CurrentPage /></main><Footer /></>
 }
