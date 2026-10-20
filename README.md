@@ -31,7 +31,9 @@ The production files are generated in `dist/`.
 
 ## Images and client logos
 
-The website uses the supplied hero image, all seven team portraits, and the supplied `Logo-*` artwork in a dedicated Collaborations page and a prominent Home-page logo grid. The `cl-*` Logoipsum placeholders remain unused.
+The website uses the supplied hero image, all seven team portraits, and the newly supplied partner artwork for Cowell, Blue Pay/Blue Mart, Askara Technology, Lexington Residence, PT Hasurat Abadi, Lippo Malls, and PT Bumi Suyarna Resources. The older demo logo files remain unused.
+
+The Home hero uses `MBNP VIDEO.mp4` as a muted background. Playback is constrained to the first 10 seconds and loops automatically, with the original hero photograph as its loading poster and fallback image.
 
 ## Insights
 

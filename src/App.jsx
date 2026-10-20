@@ -20,13 +20,13 @@ const team = [
 ]
 
 const collaborations = [
-  ['Umbrella', 'umbrella.png'],
-  ['Nextmove', 'nextmove.png'],
-  ['Inspire', 'inspire.png'],
-  ['Luminous', 'luminous.png'],
-  ['Waveless', 'waveless.png'],
-  ['Sitemark', 'sitemark.png'],
-  ['Vision', 'vision.png'],
+  ['Cowell — PT Cowell Development Tbk.', 'cowell.webp'],
+  ['Blue Pay and Blue Mart', 'blue-pay.webp'],
+  ['Askara Technology', 'askara-technology.webp'],
+  ['Lexington Residence', 'lexington-residence.webp'],
+  ['PT Hasurat Abadi', 'hasurat-abadi.webp'],
+  ['Lippo Malls', 'lippo-malls.webp'],
+  ['PT Bumi Suyarna Resources', 'bumi-suyarna-resources.png'],
 ]
 
 const navigation = [
@@ -124,17 +124,36 @@ function Home() {
   return (
     <>
       <section className="home-hero">
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="./assets/hero-legal.webp"
+          aria-label="MBNP at Law introduction"
+          onTimeUpdate={(event) => {
+            if (event.currentTarget.currentTime >= 10) {
+              event.currentTarget.currentTime = 0
+              event.currentTarget.play().catch(() => {})
+            }
+          }}
+        >
+          <source src="./assets/mbnp-hero.mp4#t=0,10" type="video/mp4" />
+        </video>
+        <div className="hero-shade" aria-hidden="true" />
         <div className="hero-copy">
           <span className="hero-number">01 / MBNP</span>
           <p className="eyebrow">Independent counsel · Jakarta</p>
           <h1>Clear counsel for important decisions.</h1>
           <p>Strategic and practical legal support for businesses navigating Indonesia's evolving landscape.</p>
-          <a className="button" href="./about.html">Discover MBNP <Arrow /></a>
+          <div className="hero-actions">
+            <a className="button light-button" href="./about.html">Discover MBNP <Arrow /></a>
+            <a className="hero-text-link" href="./expertise.html">Explore expertise <Arrow /></a>
+          </div>
         </div>
-        <div className="hero-photo">
-          <img src="./assets/hero-legal.webp" alt="Legal professionals reviewing business documents" />
-          <div className="hero-caption"><span>Jakarta</span><span>Indonesia</span></div>
-        </div>
+        <div className="hero-caption"><span>Jakarta</span><span>Indonesia · Est. with purpose</span></div>
       </section>
 
       <section className="section intro-grid">
@@ -224,7 +243,7 @@ function Collaborations() {
       <section className="section collaboration-page">
         <div className="collaboration-copy">
           <p className="eyebrow">Selected network</p>
-          <h2>Organisations represented in the supplied MBNP assets.</h2>
+          <h2>Organisations represented in MBNP's partner assets.</h2>
           <p>Each relationship is approached with discretion and an understanding of the commercial context surrounding the matter.</p>
         </div>
         <CollaborationLogos />
