@@ -59,7 +59,7 @@ function Header({ page }) {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <a className="logo" href="./index.html" aria-label="MBNP at Law home">
-        <img src="./assets/mbnp-brandmark.svg" alt="Masdiyono, Bahri, Narayana & Partners" />
+        <img src="./assets/mbnp-brandmark-white.svg" alt="Masdiyono, Bahri, Narayana & Partners" />
       </a>
       <button className="menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
         {open ? 'Close' : 'Menu'}
