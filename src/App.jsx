@@ -4,6 +4,8 @@ const WORDPRESS_API =
   import.meta.env.VITE_WORDPRESS_API_URL ||
   'https://mbnp.co.id/wp-json/wp/v2/posts?_embed=1&per_page=6'
 
+const ARTICLE_REFRESH_INTERVAL = 15 * 60 * 1000
+
 const services = [
   {
     number: '01',
@@ -60,6 +62,29 @@ const marqueeItems = [
   'Business Licensing',
   'Employment',
   'Immigration',
+]
+
+const clientGroups = [
+  {
+    number: '01',
+    title: 'Domestic companies',
+    description: 'Commercially grounded legal support for organisations operating and growing in Indonesia.',
+  },
+  {
+    number: '02',
+    title: 'International organisations',
+    description: 'Local insight for cross-border stakeholders navigating the Indonesian legal landscape.',
+  },
+  {
+    number: '03',
+    title: 'Business leadership',
+    description: 'Clear counsel for founders, executives, and decision-makers facing consequential matters.',
+  },
+  {
+    number: '04',
+    title: 'In-house legal teams',
+    description: 'Responsive collaboration that complements internal capability when additional support is needed.',
+  },
 ]
 
 function useScrollReveal() {
@@ -153,6 +178,7 @@ function Header() {
       <nav className={menuOpen ? 'is-open' : ''} aria-label="Primary navigation">
         <a href="#about" onClick={closeMenu}>About</a>
         <a href="#services" onClick={closeMenu}>Expertise</a>
+        <a href="#clients" onClick={closeMenu}>Clients</a>
         <a href="#insights" onClick={closeMenu}>Insights</a>
         <a href="#people" onClick={closeMenu}>People</a>
         <a className="nav-contact" href="#contact" onClick={closeMenu}>Contact</a>
@@ -262,29 +288,72 @@ function Services() {
   )
 }
 
+function Clients() {
+  return (
+    <section className="clients section" id="clients">
+      <div className="clients-intro">
+        <div data-reveal>
+          <p className="eyebrow">Clients & collaborations</p>
+          <h2>Built around the people making the decisions.</h2>
+        </div>
+        <div className="clients-note" data-reveal style={{ '--reveal-delay': '.12s' }}>
+          <p>
+            We work alongside domestic and international organisations with discretion, commercial awareness, and a shared focus on practical outcomes.
+          </p>
+          <span>Client identities are presented only with permission.</span>
+        </div>
+      </div>
+      <div className="client-groups">
+        {clientGroups.map((group) => (
+          <article className="client-group" key={group.number} data-reveal>
+            <span>{group.number}</span>
+            <h3>{group.title}</h3>
+            <p>{group.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function Insights() {
   const [posts, setPosts] = useState([])
   const [status, setStatus] = useState('loading')
+  const [lastUpdated, setLastUpdated] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
 
-    async function loadPosts() {
-      setStatus('loading')
+    async function loadPosts(showLoading = false) {
+      if (showLoading) setStatus('loading')
       try {
-        const response = await fetch(WORDPRESS_API, { signal: controller.signal })
+        const response = await fetch(WORDPRESS_API, {
+          signal: controller.signal,
+          cache: 'no-store',
+        })
         if (!response.ok) throw new Error(`WordPress returned ${response.status}`)
         const result = await response.json()
         const published = result.map(mapPost).filter((post) => post.slug !== 'hello-world')
         setPosts(published)
         setStatus(published.length ? 'ready' : 'empty')
+        setLastUpdated(new Date())
       } catch (error) {
         if (error.name !== 'AbortError') setStatus('error')
       }
     }
 
-    loadPosts()
-    return () => controller.abort()
+    loadPosts(true)
+    const refreshTimer = window.setInterval(() => loadPosts(), ARTICLE_REFRESH_INTERVAL)
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') loadPosts()
+    }
+    document.addEventListener('visibilitychange', refreshWhenVisible)
+
+    return () => {
+      controller.abort()
+      window.clearInterval(refreshTimer)
+      document.removeEventListener('visibilitychange', refreshWhenVisible)
+    }
   }, [])
 
   const featured = posts[0]
@@ -301,6 +370,12 @@ function Insights() {
           View all insights <ArrowIcon />
         </a>
       </div>
+
+      {lastUpdated && (
+        <p className="feed-status" role="status">
+          <span /> Live from MBNP WordPress · refreshed {lastUpdated.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+        </p>
+      )}
 
       {status === 'loading' && (
         <div className="insight-loading" role="status" aria-live="polite">
@@ -415,6 +490,7 @@ function Footer() {
       <div className="footer-links">
         <a href="#about">About</a>
         <a href="#services">Expertise</a>
+        <a href="#clients">Clients</a>
         <a href="#insights">Insights</a>
         <a href="#people">People</a>
       </div>
@@ -437,6 +513,7 @@ export default function App() {
         <About />
         <PracticeMarquee />
         <Services />
+        <Clients />
         <Insights />
         <People />
         <Contact />
