@@ -10,13 +10,9 @@ const services = [
 ]
 
 const team = [
-  ['Didi Saeful Bahri, S.H.', 'Managing Partner', 'didi-saeful-bahri.webp'],
-  ['Sandi Masdiyono, S.H., M.H.', 'Partner', 'sandi-masdiyono.webp'],
-  ['Yunka Novriama, S.H., M.H.', 'Partner', 'yunka-novriama.webp'],
-  ['Andi Nur Charisma Putri Iskandar, S.H., M.H.', 'Senior Associate', 'andi-nur-charisma-putri.webp'],
-  ['M. Haikal Uli Nuha, S.H.', 'Senior Associate', 'm-haikal-uli-nuha.webp'],
-  ['Muhammad Dhio Saputra, S.H.', 'Senior Associate', 'muhammad-dhio-saputra.webp'],
-  ['Rizky Nauveri Fauzi H, S.H.', 'Senior Associate', 'rizky-nauveri-fauzi-h.webp'],
+  ['Didi Saeful Bahri, S.H.', 'Managing Partner', 'didi-saeful-bahri.webp', 'didi-saeful-bahri'],
+  ['Sandi Masdiyono, S.H., M.H.', 'Partner', 'sandi-masdiyono.webp', 'sandi-masdiyono'],
+  ['Muhammad Dhio Saputra, S.H.', 'Senior Associate', 'muhammad-dhio-saputra.webp', 'muhammad-dhio-saputra'],
 ]
 
 const collaborations = [
@@ -155,11 +151,11 @@ function PageIntro({ eyebrow, title, text }) {
 function TeamCards({ limit }) {
   return (
     <div className="team-grid">
-      {team.slice(0, limit || team.length).map(([name, role, image]) => (
-        <article className="team-card" key={name}>
+      {team.slice(0, limit || team.length).map(([name, role, image, slug]) => (
+        <a className="team-card" href={`./profile.html?person=${slug}`} key={name} aria-label={`View profile for ${name}`}>
           <img src={`./assets/${image}`} alt={name} loading="lazy" />
-          <h3>{name}</h3><p>{role}</p>
-        </article>
+          <div className="team-card-heading"><div><h3>{name}</h3><p>{role}</p></div><Arrow /></div>
+        </a>
       ))}
     </div>
   )
@@ -322,32 +318,15 @@ function Home() {
         </div>
       </section>
 
-      <section className="section soft-section">
-        <div className="section-heading">
-          <div><p className="eyebrow">Selected expertise</p><h2>Focused legal capability.</h2></div>
-          <a className="text-link" href="./expertise.html">View all expertise <Arrow /></a>
-        </div>
-        <div className="service-preview">
-          {services.slice(0, 3).map(([title, description], index) => (
-            <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{description}</p></article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section collaboration-home">
-        <div className="section-heading">
-          <div><p className="eyebrow">Collaborations</p><h2>Relationships built on trust.</h2></div>
-          <a className="text-link" href="./collaborations.html">Explore network <Arrow /></a>
-        </div>
-        <CollaborationLogos compact />
-      </section>
-
-      <section className="section">
-        <div className="section-heading">
-          <div><p className="eyebrow">Our people</p><h2>Meet the team.</h2></div>
-          <a className="text-link" href="./people.html">View everyone <Arrow /></a>
-        </div>
-        <TeamCards limit={3} />
+      <section className="section home-pathways" aria-label="Explore MBNP">
+        <a className="pathway-card" href="./expertise.html">
+          <img src="./assets/editorial-corporate.jpg" alt="Corporate legal planning" />
+          <div><p className="eyebrow">Our expertise</p><h2>Advice grounded in commercial reality.</h2><span>Explore capabilities <Arrow /></span></div>
+        </a>
+        <a className="pathway-card" href="./people.html">
+          <img src="./assets/editorial-about-firm.jpg" alt="Legal professionals collaborating" />
+          <div><p className="eyebrow">Our people</p><h2>Meet the team behind the advice.</h2><span>View our people <Arrow /></span></div>
+        </a>
       </section>
 
       <section className="section insights-preview">
@@ -355,7 +334,7 @@ function Home() {
           <div><p className="eyebrow">Latest thinking</p><h2>Developments that matter.</h2></div>
           <a className="text-link" href="./insights.html">View all insights <Arrow /></a>
         </div>
-        <NewsCards limit={3} />
+        <NewsCards limit={2} />
       </section>
       <ContactCallout />
     </>
@@ -425,8 +404,50 @@ function Collaborations() {
 function People() {
   return (
     <>
-      <PageIntro eyebrow="Our people" title="Experience you can rely on." text="A multidisciplinary team committed to thoughtful counsel, responsive service, and lasting client relationships." />
+      <PageIntro eyebrow="Our people" title="Experience you can rely on." text="Meet the three professionals currently featured by MBNP. Select a profile to view its prepared biography structure and contact options." />
       <section className="section people-section"><TeamCards /></section>
+      <ContactCallout />
+    </>
+  )
+}
+
+function Profile() {
+  const slug = new URLSearchParams(window.location.search).get('person')
+  const person = team.find(([, , , personSlug]) => personSlug === slug) || team[0]
+  const [name, role, image] = person
+
+  return (
+    <>
+      <section className="profile-hero">
+        <div className="profile-photo"><img src={`./assets/${image}`} alt={name} /></div>
+        <div className="profile-heading">
+          <p className="eyebrow">Our people</p>
+          <h1>{name}</h1>
+          <p className="profile-role">{role}</p>
+          <p className="profile-summary">The detailed professional biography for {name} is being prepared and will be published after approval.</p>
+          <a className="text-link light-link" href={`mailto:${CONTACT_EMAIL}`}>Contact through MBNP <Arrow /></a>
+        </div>
+      </section>
+
+      <section className="section profile-content">
+        <div className="profile-main">
+          <p className="eyebrow">Biography</p>
+          <h2>Profile details in preparation.</h2>
+          <p>This page is ready to receive an approved biography, areas of focus, representative experience, education, professional admissions, and individual contact details.</p>
+          <div className="profile-detail-grid">
+            {['Areas of focus', 'Representative experience', 'Education & admissions'].map((label) => (
+              <div key={label}><span>{label}</span><p>Details to be added after confirmation.</p></div>
+            ))}
+          </div>
+        </div>
+        <aside className="business-card-panel">
+          <p className="eyebrow">Digital business card</p>
+          <h2>Save contact details.</h2>
+          <p>The downloadable business card will be activated after the final telephone number, email address, title, and card design are approved.</p>
+          <button className="button disabled-button" type="button" disabled>Download card <span>Coming soon</span></button>
+          <small>Prepared for PDF and vCard formats.</small>
+        </aside>
+      </section>
       <ContactCallout />
     </>
   )
@@ -534,7 +555,7 @@ function ContactCallout() {
   )
 }
 
-const pages = { home: Home, about: About, expertise: Expertise, collaborations: Collaborations, people: People, insights: Insights, contact: Contact }
+const pages = { home: Home, about: About, expertise: Expertise, collaborations: Collaborations, people: People, profile: Profile, insights: Insights, contact: Contact }
 
 export default function App({ page = 'home' }) {
   const CurrentPage = pages[page] || Home
@@ -561,5 +582,5 @@ export default function App({ page = 'home' }) {
     return () => observer.disconnect()
   }, [page])
 
-  return <><Header page={page} /><main><CurrentPage /></main><Footer /><WhatsAppBubble /></>
+  return <><Header page={page === 'profile' ? 'people' : page} /><main><CurrentPage /></main><Footer /><WhatsAppBubble /></>
 }
