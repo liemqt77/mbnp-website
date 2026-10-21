@@ -29,6 +29,9 @@ const collaborations = [
   ['PT Bumi Suyarna Resources', 'bumi-suyarna-resources.png'],
 ]
 
+const CONTACT_EMAIL = 'info@mbnp.co.id'
+const WHATSAPP_URL = 'https://wa.me/6287777102030?text=Halo%20MBNP%20at%20Law%2C%20saya%20ingin%20berkonsultasi%20mengenai%20layanan%20hukum.'
+
 const navigation = [
   ['home', 'Home', './index.html'],
   ['about', 'About', './about.html'],
@@ -83,6 +86,19 @@ function Footer() {
       </div>
       <p>© {new Date().getFullYear()} MBNP at Law</p>
     </footer>
+  )
+}
+
+function WhatsAppBubble() {
+  return (
+    <a className="whatsapp-bubble" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Chat with MBNP via WhatsApp">
+      <span className="whatsapp-label">Chat with us</span>
+      <span className="whatsapp-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32">
+          <path d="M26.7 5.3A15 15 0 0 0 3.1 23.4L1 31l7.8-2a15 15 0 0 0 7.2 1.8h.1A15 15 0 0 0 26.7 5.3Zm-10.6 23a12.5 12.5 0 0 1-6.4-1.8l-.5-.3-4.6 1.2 1.2-4.5-.3-.5A12.5 12.5 0 1 1 16.1 28.3Zm6.9-9.4c-.4-.2-2.2-1.1-2.6-1.2-.3-.1-.6-.2-.8.2-.2.4-1 1.2-1.2 1.5-.2.3-.4.3-.8.1-2.2-1.1-3.7-2-5.2-4.5-.4-.7.4-.7 1.1-2.2.1-.3.1-.6 0-.8-.1-.2-.8-2-1.2-2.7-.3-.8-.7-.7-.9-.7h-.8c-.3 0-.8.1-1.1.5-.4.4-1.5 1.5-1.5 3.7s1.6 4.3 1.8 4.6c.2.3 3.1 4.8 7.6 6.7 2.8 1.2 3.9 1.3 5.3 1.1.9-.1 2.2-.9 2.5-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5Z" />
+        </svg>
+      </span>
+    </a>
   )
 }
 
@@ -264,20 +280,64 @@ function People() {
 }
 
 function Contact() {
+  const [formStatus, setFormStatus] = useState('')
+
+  const openEmailDraft = (event) => {
+    event.preventDefault()
+    const form = new FormData(event.currentTarget)
+    const subject = `Website enquiry — ${form.get('service') || 'General consultation'}`
+    const body = [
+      `Name: ${form.get('name')}`,
+      `Email: ${form.get('email')}`,
+      `Phone: ${form.get('phone') || '-'}`,
+      `Service: ${form.get('service') || 'General consultation'}`,
+      '',
+      'Message:',
+      form.get('message'),
+    ].join('\n')
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.open(gmailUrl, '_blank', 'noopener,noreferrer')
+    setFormStatus(`A Gmail draft addressed to ${CONTACT_EMAIL} has been opened.`)
+  }
+
   return (
     <>
       <PageIntro eyebrow="Contact" title="Start a conversation." text="Tell us about the matter at hand and our team will help identify the right next step." />
       <section className="section contact-grid">
-        <div>
-          <p className="eyebrow">Visit</p><h2>Jakarta</h2>
-          <p>Menara Cakrawala, 12th Floor, Unit 5A<br />Jl. M.H. Thamrin No. Kav. 9<br />Menteng, Central Jakarta 10340</p>
-          <a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Menara+Cakrawala+Jl.+M.H.+Thamrin+No.+Kav.+9+Jakarta" target="_blank" rel="noreferrer">Open map <Arrow /></a>
+        <div className="contact-information">
+          <div>
+            <p className="eyebrow">Visit</p><h2>Jakarta</h2>
+            <p>Menara Cakrawala, 12th Floor, Unit 5A<br />Jl. M.H. Thamrin No. Kav. 9<br />Menteng, Central Jakarta 10340</p>
+            <a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Menara+Cakrawala+Jl.+M.H.+Thamrin+No.+Kav.+9+Jakarta" target="_blank" rel="noreferrer">Open map <Arrow /></a>
+          </div>
+          <div className="direct-contact">
+            <p className="eyebrow">Direct contact</p>
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">+62 877 7710 2030</a>
+          </div>
         </div>
-        <div>
-          <p className="eyebrow">Get in touch</p>
-          <a className="contact-link" href="mailto:info@mbnp.co.id">info@mbnp.co.id</a>
-          <a className="contact-link" href="https://wa.me/6287777102030" target="_blank" rel="noreferrer">+62 877 7710 2030</a>
-        </div>
+        <form className="contact-form" onSubmit={openEmailDraft}>
+          <div className="form-heading"><p className="eyebrow">Send an enquiry</p><h2>How can we help?</h2></div>
+          <div className="form-row">
+            <label>Full name<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label>
+            <label>Email address<input name="email" type="email" autoComplete="email" required placeholder="name@company.com" /></label>
+          </div>
+          <div className="form-row">
+            <label>Phone number<input name="phone" type="tel" autoComplete="tel" placeholder="+62" /></label>
+            <label>Area of interest
+              <select name="service" defaultValue="">
+                <option value="">General consultation</option>
+                {services.map(([service]) => <option key={service} value={service}>{service}</option>)}
+              </select>
+            </label>
+          </div>
+          <label>Tell us about your matter<textarea name="message" rows="5" required placeholder="Briefly describe how we can assist you." /></label>
+          <div className="form-submit">
+            <button className="button" type="submit">Compose email <Arrow /></button>
+            <p>Your message will open as a Gmail draft addressed to {CONTACT_EMAIL}.</p>
+          </div>
+          {formStatus && <p className="form-status" role="status">{formStatus}</p>}
+        </form>
       </section>
     </>
   )
@@ -319,5 +379,5 @@ export default function App({ page = 'home' }) {
     return () => observer.disconnect()
   }, [page])
 
-  return <><Header page={page} /><main><CurrentPage /></main><Footer /></>
+  return <><Header page={page} /><main><CurrentPage /></main><Footer /><WhatsAppBubble /></>
 }
