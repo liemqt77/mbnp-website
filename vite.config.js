@@ -17,6 +17,7 @@ export default defineConfig({
         expertise: resolve(process.cwd(), 'expertise.html'),
         collaborations: resolve(process.cwd(), 'collaborations.html'),
         people: resolve(process.cwd(), 'people.html'),
+        insights: resolve(process.cwd(), 'insights.html'),
         contact: resolve(process.cwd(), 'contact.html'),
       },
     },

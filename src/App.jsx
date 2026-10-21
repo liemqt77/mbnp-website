@@ -32,12 +32,45 @@ const collaborations = [
 const CONTACT_EMAIL = 'info@mbnp.co.id'
 const WHATSAPP_URL = 'https://wa.me/6287777102030?text=Halo%20MBNP%20at%20Law%2C%20saya%20ingin%20berkonsultasi%20mengenai%20layanan%20hukum.'
 
+const newsTopics = {
+  all: ['All updates', '(hukum OR regulasi OR perusahaan OR bisnis) sourcecountry:Indonesia'],
+  corporate: ['Corporate', '("hukum perusahaan" OR korporasi OR merger OR akuisisi) sourcecountry:Indonesia'],
+  disputes: ['Disputes', '(litigasi OR arbitrase OR sengketa) sourcecountry:Indonesia'],
+  employment: ['Employment', '("hukum ketenagakerjaan" OR ketenagakerjaan OR "hubungan industrial") sourcecountry:Indonesia'],
+  investment: ['Investment', '(investasi OR perizinan OR BKPM) sourcecountry:Indonesia'],
+}
+
+const fallbackNews = [
+  {
+    title: 'Indonesian laws and regulations database',
+    url: 'https://peraturan.bpk.go.id/',
+    domain: 'peraturan.bpk.go.id',
+    sourcecountry: 'Indonesia',
+    fallback: true,
+  },
+  {
+    title: 'Financial services regulatory updates',
+    url: 'https://www.ojk.go.id/id/berita-dan-kegiatan/Pages/default.aspx',
+    domain: 'ojk.go.id',
+    sourcecountry: 'Indonesia',
+    fallback: true,
+  },
+  {
+    title: 'Investment and licensing press releases',
+    url: 'https://www.bkpm.go.id/id/info/siaran-pers',
+    domain: 'bkpm.go.id',
+    sourcecountry: 'Indonesia',
+    fallback: true,
+  },
+]
+
 const navigation = [
   ['home', 'Home', './index.html'],
   ['about', 'About', './about.html'],
   ['expertise', 'Expertise', './expertise.html'],
   ['collaborations', 'Collaborations', './collaborations.html'],
   ['people', 'People', './people.html'],
+  ['insights', 'Insights', './insights.html'],
   ['contact', 'Contact', './contact.html'],
 ]
 
@@ -136,6 +169,105 @@ function CollaborationLogos({ compact = false }) {
   )
 }
 
+function parseGdeltDate(value) {
+  if (!value || !/^\d{8}T\d{6}Z$/.test(value)) return null
+  return new Date(`${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}T${value.slice(9, 11)}:${value.slice(11, 13)}:${value.slice(13, 15)}Z`)
+}
+
+function displayNewsDate(value) {
+  const date = parseGdeltDate(value)
+  if (!date || Number.isNaN(date.getTime())) return 'Official resource'
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)
+}
+
+function useNewsFeed(topic, limit) {
+  const [articles, setArticles] = useState([])
+  const [status, setStatus] = useState('loading')
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const cacheKey = `mbnp-news-${topic}-${limit}`
+    const cached = localStorage.getItem(cacheKey)
+
+    if (cached) {
+      try {
+        const saved = JSON.parse(cached)
+        if (Date.now() - saved.timestamp < 30 * 60 * 1000 && saved.articles?.length) {
+          setArticles(saved.articles)
+          setStatus('ready')
+          return () => controller.abort()
+        }
+      } catch {
+        localStorage.removeItem(cacheKey)
+      }
+    }
+
+    setStatus('loading')
+    const query = newsTopics[topic]?.[1] || newsTopics.all[1]
+    const parameters = new URLSearchParams({
+      query,
+      mode: 'artlist',
+      maxrecords: String(limit),
+      format: 'json',
+      sort: 'datedesc',
+      timespan: '1month',
+    })
+
+    fetch(`https://api.gdeltproject.org/api/v2/doc/doc?${parameters}`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`News service returned ${response.status}`)
+        return response.json()
+      })
+      .then((data) => {
+        const freshArticles = (data.articles || [])
+          .filter((article) => article.title && article.url)
+          .slice(0, limit)
+        if (!freshArticles.length) throw new Error('No matching news was returned')
+        setArticles(freshArticles)
+        setStatus('ready')
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), articles: freshArticles }))
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') return
+        setArticles(fallbackNews.slice(0, limit))
+        setStatus('fallback')
+      })
+
+    return () => controller.abort()
+  }, [topic, limit])
+
+  return { articles, status }
+}
+
+function NewsCards({ topic = 'all', limit = 6 }) {
+  const { articles, status } = useNewsFeed(topic, limit)
+
+  if (status === 'loading') {
+    return <div className="news-grid news-loading" aria-live="polite" aria-busy="true">{Array.from({ length: Math.min(limit, 6) }, (_, index) => <div className="news-skeleton" key={index} />)}</div>
+  }
+
+  return (
+    <>
+      {status === 'fallback' && <p className="news-notice" role="status">Live news is temporarily unavailable. These official Indonesian legal resources remain available.</p>}
+      <div className="news-grid">
+        {articles.map((article, index) => (
+          <a className="news-card" href={article.url} target="_blank" rel="noreferrer" key={`${article.url}-${index}`}>
+            <div className={`news-image ${article.socialimage ? '' : 'placeholder'}`}>
+              {article.socialimage && <img src={article.socialimage} alt="" loading="lazy" onError={(event) => { event.currentTarget.hidden = true; event.currentTarget.parentElement.classList.add('placeholder') }} />}
+              <span>{String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div className="news-card-copy">
+              <p className="news-meta"><span>{article.domain || article.sourcecountry || 'News source'}</span><span>{displayNewsDate(article.seendate)}</span></p>
+              <h3>{article.title}</h3>
+              <span className="news-read">Read original article <Arrow /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </>
+  )
+}
+
 function Home() {
   return (
     <>
@@ -208,6 +340,14 @@ function Home() {
         </div>
         <TeamCards limit={3} />
       </section>
+
+      <section className="section insights-preview">
+        <div className="section-heading">
+          <div><p className="eyebrow">Latest thinking</p><h2>Developments that matter.</h2></div>
+          <a className="text-link" href="./insights.html">View all insights <Arrow /></a>
+        </div>
+        <NewsCards limit={3} />
+      </section>
       <ContactCallout />
     </>
   )
@@ -274,6 +414,35 @@ function People() {
     <>
       <PageIntro eyebrow="Our people" title="Experience you can rely on." text="A multidisciplinary team committed to thoughtful counsel, responsive service, and lasting client relationships." />
       <section className="section people-section"><TeamCards /></section>
+      <ContactCallout />
+    </>
+  )
+}
+
+function Insights() {
+  const [topic, setTopic] = useState('all')
+
+  return (
+    <>
+      <PageIntro eyebrow="Insights" title="Legal developments, clearly considered." text="A live selection of recent Indonesian legal, regulatory, and business developments from independent news sources." />
+      <section className="section insights-section">
+        <div className="insights-toolbar">
+          <div>
+            <p className="eyebrow">Live news feed</p>
+            <h2>Explore recent developments.</h2>
+          </div>
+          <div className="topic-filters" aria-label="Filter news by topic">
+            {Object.entries(newsTopics).map(([id, [label]]) => (
+              <button type="button" className={topic === id ? 'active' : ''} aria-pressed={topic === id} onClick={() => setTopic(id)} key={id}>{label}</button>
+            ))}
+          </div>
+        </div>
+        <NewsCards topic={topic} limit={9} />
+        <div className="news-disclosure">
+          <p><strong>About this feed</strong></p>
+          <p>Headlines are supplied by the free GDELT news index and open on the original publisher's website. MBNP does not endorse third-party content, and this feed does not constitute legal advice. Results refresh automatically every 30 minutes.</p>
+        </div>
+      </section>
       <ContactCallout />
     </>
   )
@@ -352,7 +521,7 @@ function ContactCallout() {
   )
 }
 
-const pages = { home: Home, about: About, expertise: Expertise, collaborations: Collaborations, people: People, contact: Contact }
+const pages = { home: Home, about: About, expertise: Expertise, collaborations: Collaborations, people: People, insights: Insights, contact: Contact }
 
 export default function App({ page = 'home' }) {
   const CurrentPage = pages[page] || Home
