@@ -64,6 +64,14 @@ const fallbackNews = [
   },
 ]
 
+const newsImages = {
+  all: ['./assets/editorial-corporate.jpg', './assets/editorial-disputes.jpg', './assets/editorial-investment.jpg', './assets/editorial-employment.jpg', './assets/editorial-compliance.jpg'],
+  corporate: ['./assets/editorial-corporate.jpg', './assets/editorial-compliance.jpg'],
+  disputes: ['./assets/editorial-disputes.jpg', './assets/editorial-corporate.jpg'],
+  employment: ['./assets/editorial-employment.jpg', './assets/editorial-about-firm.jpg'],
+  investment: ['./assets/editorial-investment.jpg', './assets/editorial-corporate.jpg'],
+}
+
 const navigation = [
   ['home', 'Home', './index.html'],
   ['about', 'About', './about.html'],
@@ -241,6 +249,7 @@ function useNewsFeed(topic, limit) {
 
 function NewsCards({ topic = 'all', limit = 6 }) {
   const { articles, status } = useNewsFeed(topic, limit)
+  const topicImages = newsImages[topic] || newsImages.all
 
   if (status === 'loading') {
     return <div className="news-grid news-loading" aria-live="polite" aria-busy="true">{Array.from({ length: Math.min(limit, 6) }, (_, index) => <div className="news-skeleton" key={index} />)}</div>
@@ -252,8 +261,8 @@ function NewsCards({ topic = 'all', limit = 6 }) {
       <div className="news-grid">
         {articles.map((article, index) => (
           <a className="news-card" href={article.url} target="_blank" rel="noreferrer" key={`${article.url}-${index}`}>
-            <div className={`news-image ${article.socialimage ? '' : 'placeholder'}`}>
-              {article.socialimage && <img src={article.socialimage} alt="" loading="lazy" onError={(event) => { event.currentTarget.hidden = true; event.currentTarget.parentElement.classList.add('placeholder') }} />}
+            <div className="news-image">
+              <img src={topicImages[index % topicImages.length]} alt="" loading="lazy" />
               <span>{String(index + 1).padStart(2, '0')}</span>
             </div>
             <div className="news-card-copy">
@@ -358,7 +367,7 @@ function About() {
     <>
       <PageIntro eyebrow="About MBNP" title="Practical advice, delivered with purpose." text="We combine Indonesian legal knowledge with a clear understanding of the commercial decisions our clients face." />
       <section className="section image-copy">
-        <img src="./assets/hero-legal.webp" alt="MBNP legal professionals at work" />
+        <img src="./assets/editorial-about-firm.jpg" alt="Legal professionals collaborating in a Jakarta office" />
         <div>
           <p className="eyebrow">Our approach</p><h2>Clarity before complexity.</h2>
           <p>Our work is strategic, practical, expeditious, targeted, and valuable. We listen closely, communicate directly, and shape our advice around the outcome that matters.</p>
@@ -382,6 +391,10 @@ function Expertise() {
   return (
     <>
       <PageIntro eyebrow="Our expertise" title="Legal capability aligned with your business." text="Advice shaped around the matter at hand, the commercial context, and the outcome that matters to you." />
+      <section className="expertise-visual">
+        <img src="./assets/editorial-corporate.jpg" alt="Corporate legal and commercial planning materials" />
+        <div><p className="eyebrow">Commercial perspective</p><p>Every matter begins with understanding the decision behind the legal question.</p></div>
+      </section>
       <section className="section service-grid">
         {services.map(([title, description], index) => (
           <article key={title}><span>0{index + 1}</span><h2>{title}</h2><p>{description}</p></article>
