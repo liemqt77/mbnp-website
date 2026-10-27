@@ -1,6 +1,7 @@
 node_modules/
 .vite-cache/
 dist/
+MBNP-public_html.zip
 .env
 .DS_Store
 *.log
