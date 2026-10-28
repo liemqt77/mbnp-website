@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react'
 
 const services = [
-  ['Litigasi Komersial', 'Pendampingan strategis untuk sengketa komersial yang kompleks, sejak penilaian awal hingga penyelesaian.'],
-  ['Arbitrase dan Penyelesaian Sengketa Alternatif', 'Pilihan penyelesaian yang praktis melalui arbitrase, mediasi, dan mekanisme alternatif lainnya.'],
-  ['Korporasi dan Komersial', 'Pendampingan hukum korporasi dan transaksi yang selaras dengan kebutuhan usaha.'],
-  ['Perizinan Usaha', 'Pendampingan pendirian perusahaan, perizinan, dan pemenuhan ketentuan regulator.'],
-  ['Ketenagakerjaan', 'Nasihat terkait hubungan kerja, kebijakan perusahaan, dan pencegahan sengketa.'],
-  ['Keimigrasian', 'Dukungan hukum untuk kebutuhan keimigrasian perusahaan dan mobilitas tenaga kerja lintas negara.'],
+  ['Commercial Litigation', 'Strategic support for complex business disputes, from early review to resolution.'],
+  ['Arbitration and Dispute Resolution', 'Practical options through arbitration, mediation, and other ways to resolve disputes.'],
+  ['Corporate and Commercial', 'Legal support for companies, business deals, and day-to-day operations.'],
+  ['Business Licensing', 'Help with company setup, permits, and regulatory requirements.'],
+  ['Employment', 'Advice on workplace matters, company policies, and dispute prevention.'],
+  ['Immigration', 'Support with business immigration and cross-border employee matters.'],
 ]
 
 const team = [
-  ['Didi Saeful Bahri, S.H.', 'Rekan Pengelola', 'didi-saeful-bahri.webp', 'didi-saeful-bahri'],
-  ['Sandi Masdiyono, S.H., M.H.', 'Rekan', 'sandi-masdiyono.webp', 'sandi-masdiyono'],
-  ['Muhammad Dhio Saputra, S.H.', 'Associate Senior', 'muhammad-dhio-saputra.webp', 'muhammad-dhio-saputra'],
+  ['Didi Saeful Bahri, S.H.', 'Managing Partner', 'didi-saeful-bahri.webp', 'didi-saeful-bahri'],
+  ['Sandi Masdiyono, S.H., M.H.', 'Partner', 'sandi-masdiyono.webp', 'sandi-masdiyono'],
+  ['Muhammad Dhio Saputra, S.H.', 'Senior Associate', 'muhammad-dhio-saputra.webp', 'muhammad-dhio-saputra'],
 ]
 
 const collaborations = [
   ['Cowell — PT Cowell Development Tbk.', 'cowell.webp'],
-  ['Blue Pay dan Blue Mart', 'blue-pay.webp'],
+  ['Blue Pay and Blue Mart', 'blue-pay.webp'],
   ['Askara Technology', 'askara-technology.webp'],
   ['Lexington Residence', 'lexington-residence.webp'],
   ['PT Hasurat Abadi', 'hasurat-abadi.webp'],
@@ -26,34 +26,34 @@ const collaborations = [
 ]
 
 const CONTACT_EMAIL = 'info@mbnp.co.id'
-const WHATSAPP_URL = 'https://wa.me/6287777102030?text=Halo%20MBNP%20at%20Law%2C%20saya%20ingin%20berkonsultasi%20mengenai%20layanan%20hukum.'
+const WHATSAPP_URL = 'https://wa.me/6287777102030?text=Hello%20MBNP%20at%20Law%2C%20I%20would%20like%20to%20ask%20about%20your%20legal%20services.'
 const publicAsset = (filename) => `${import.meta.env.BASE_URL}assets/${filename}`
 
 const newsTopics = {
-  all: ['Semua topik', '(hukum OR regulasi OR perusahaan OR bisnis) sourcecountry:Indonesia'],
-  corporate: ['Korporasi', '("hukum perusahaan" OR korporasi OR merger OR akuisisi) sourcecountry:Indonesia'],
-  disputes: ['Sengketa', '(litigasi OR arbitrase OR sengketa) sourcecountry:Indonesia'],
-  employment: ['Ketenagakerjaan', '("hukum ketenagakerjaan" OR ketenagakerjaan OR "hubungan industrial") sourcecountry:Indonesia'],
-  investment: ['Investasi', '(investasi OR perizinan OR BKPM) sourcecountry:Indonesia'],
+  all: ['All topics', '(hukum OR regulasi OR perusahaan OR bisnis) sourcecountry:Indonesia'],
+  corporate: ['Corporate', '("hukum perusahaan" OR korporasi OR merger OR akuisisi) sourcecountry:Indonesia'],
+  disputes: ['Disputes', '(litigasi OR arbitrase OR sengketa) sourcecountry:Indonesia'],
+  employment: ['Employment', '("hukum ketenagakerjaan" OR ketenagakerjaan OR "hubungan industrial") sourcecountry:Indonesia'],
+  investment: ['Investment', '(investasi OR perizinan OR BKPM) sourcecountry:Indonesia'],
 }
 
 const fallbackNews = [
   {
-    title: 'Basis Data Peraturan Perundang-undangan Indonesia',
+    title: 'Indonesian Laws and Regulations Database',
     url: 'https://peraturan.bpk.go.id/',
     domain: 'peraturan.bpk.go.id',
     sourcecountry: 'Indonesia',
     fallback: true,
   },
   {
-    title: 'Informasi regulasi sektor jasa keuangan',
+    title: 'Financial Services Regulatory Updates',
     url: 'https://www.ojk.go.id/id/berita-dan-kegiatan/Pages/default.aspx',
     domain: 'ojk.go.id',
     sourcecountry: 'Indonesia',
     fallback: true,
   },
   {
-    title: 'Siaran pers investasi dan perizinan',
+    title: 'Investment and Licensing Press Releases',
     url: 'https://www.bkpm.go.id/id/info/siaran-pers',
     domain: 'bkpm.go.id',
     sourcecountry: 'Indonesia',
@@ -70,13 +70,13 @@ const newsImages = {
 }
 
 const navigation = [
-  ['home', 'Beranda', './index.html'],
-  ['about', 'Tentang Kami', './about.html'],
-  ['expertise', 'Layanan', './expertise.html'],
-  ['collaborations', 'Kolaborasi', './collaborations.html'],
-  ['people', 'Tim Kami', './people.html'],
-  ['insights', 'Wawasan', './insights.html'],
-  ['contact', 'Kontak', './contact.html'],
+  ['home', 'Home', './index.html'],
+  ['about', 'About', './about.html'],
+  ['expertise', 'Services', './expertise.html'],
+  ['collaborations', 'Collaborations', './collaborations.html'],
+  ['people', 'Our People', './people.html'],
+  ['insights', 'Insights', './insights.html'],
+  ['contact', 'Contact', './contact.html'],
 ]
 
 function Arrow() { return <span aria-hidden="true">↗</span> }
@@ -99,14 +99,14 @@ function Header({ page }) {
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-      <a className="logo" href="./index.html" aria-label="Beranda MBNP at Law">
+      <a className="logo" href="./index.html" aria-label="MBNP at Law home">
         <img src={publicAsset('mbnp-brandmark-white.svg')} alt="Masdiyono, Bahri, Narayana & Partners" onError={(event) => { event.currentTarget.hidden = true; event.currentTarget.parentElement.classList.add('logo-missing') }} />
         <span className="logo-fallback" aria-hidden="true">MBNP <small>at Law</small></span>
       </a>
-      <button className="menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Tutup navigasi' : 'Buka navigasi'}>
-        {open ? 'Tutup' : 'Menu'}
+      <button className="menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'}>
+        {open ? 'Close' : 'Menu'}
       </button>
-      <nav className={open ? 'open' : ''} aria-label="Navigasi utama">
+      <nav className={open ? 'open' : ''} aria-label="Main navigation">
         {navigation.map(([id, label, href]) => (
           <a key={id} href={href} className={page === id ? 'active' : ''}>{label}</a>
         ))}
@@ -122,20 +122,20 @@ function Footer() {
       <div className="footer-contact">
         <a href="mailto:info@mbnp.co.id">info@mbnp.co.id</a>
         <a href="https://wa.me/6287777102030" target="_blank" rel="noreferrer">+62 877 7710 2030</a>
-        <a className="footer-social" href="https://www.instagram.com/mbnplaw/" target="_blank" rel="noreferrer" aria-label="Kunjungi Instagram MBNP at Law">
+        <a className="footer-social" href="https://www.instagram.com/mbnplaw/" target="_blank" rel="noreferrer" aria-label="Visit MBNP at Law on Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle className="instagram-dot" cx="17.5" cy="6.5" r="1" /></svg>
           <span>Instagram</span>
         </a>
       </div>
-      <p>© {new Date().getFullYear()} MBNP at Law. Hak cipta dilindungi.</p>
+      <p>© {new Date().getFullYear()} MBNP at Law. All rights reserved.</p>
     </footer>
   )
 }
 
 function WhatsAppBubble() {
   return (
-    <a className="whatsapp-bubble" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Hubungi MBNP melalui WhatsApp">
-      <span className="whatsapp-label">Hubungi kami</span>
+    <a className="whatsapp-bubble" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Contact MBNP on WhatsApp">
+      <span className="whatsapp-label">Contact us</span>
       <span className="whatsapp-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32">
           <path d="M26.7 5.3A15 15 0 0 0 3.1 23.4L1 31l7.8-2a15 15 0 0 0 7.2 1.8h.1A15 15 0 0 0 26.7 5.3Zm-10.6 23a12.5 12.5 0 0 1-6.4-1.8l-.5-.3-4.6 1.2 1.2-4.5-.3-.5A12.5 12.5 0 1 1 16.1 28.3Zm6.9-9.4c-.4-.2-2.2-1.1-2.6-1.2-.3-.1-.6-.2-.8.2-.2.4-1 1.2-1.2 1.5-.2.3-.4.3-.8.1-2.2-1.1-3.7-2-5.2-4.5-.4-.7.4-.7 1.1-2.2.1-.3.1-.6 0-.8-.1-.2-.8-2-1.2-2.7-.3-.8-.7-.7-.9-.7h-.8c-.3 0-.8.1-1.1.5-.4.4-1.5 1.5-1.5 3.7s1.6 4.3 1.8 4.6c.2.3 3.1 4.8 7.6 6.7 2.8 1.2 3.9 1.3 5.3 1.1.9-.1 2.2-.9 2.5-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5Z" />
@@ -146,13 +146,13 @@ function WhatsAppBubble() {
 }
 
 const guideMenus = [
-  { id: 'services', label: 'Layanan hukum', title: 'Pilih bidang layanan', choices: services.map(([label, answer]) => ({ id: label, label, answer })), footerLink: ['./expertise.html', 'Lihat seluruh layanan'] },
-  { id: 'team', label: 'Tim MBNP', title: 'Pilih profil profesional', choices: team.map(([name, role, , slug]) => ({ id: slug, label: name, answer: `${role} MBNP at Law.`, href: `./profile.html?person=${slug}`, link: 'Buka profil' })), footerLink: ['./people.html', 'Lihat seluruh tim'] },
-  { id: 'collaborations', label: 'Kolaborasi', title: 'Pilih nama untuk melihat informasi kolaborasi', choices: collaborations.map(([name]) => ({ id: name, label: name, answer: `${name} tercantum dalam jaringan kolaborasi MBNP at Law.` })), footerLink: ['./collaborations.html', 'Lihat halaman kolaborasi'] },
-  { id: 'consultation', label: 'Cara berkonsultasi', title: 'Pilih cara menghubungi MBNP', choices: [
-    { id: 'whatsapp', label: 'WhatsApp', answer: 'Mulai percakapan dengan tim MBNP melalui WhatsApp.', href: 'https://wa.me/6287777102030?text=Halo%20MBNP%20at%20Law%2C%20saya%20ingin%20berkonsultasi.', link: 'Buka WhatsApp', external: true },
-    { id: 'contact-form', label: 'Formulir kontak', answer: 'Sampaikan kebutuhan umum melalui formulir pada halaman kontak.', href: './contact.html', link: 'Buka halaman kontak' },
-    { id: 'email', label: 'Surel', answer: 'Kirim surel ke info@mbnp.co.id.', href: 'mailto:info@mbnp.co.id', link: 'Tulis surel' },
+  { id: 'services', label: 'Legal services', title: 'Choose a service', choices: services.map(([label, answer]) => ({ id: label, label, answer })), footerLink: ['./expertise.html', 'View all services'] },
+  { id: 'team', label: 'Our people', title: 'Choose a team member', choices: team.map(([name, role, , slug]) => ({ id: slug, label: name, answer: `${role} at MBNP at Law.`, href: `./profile.html?person=${slug}`, link: 'View profile' })), footerLink: ['./people.html', 'View the full team'] },
+  { id: 'collaborations', label: 'Collaborations', title: 'Choose a name to learn more', choices: collaborations.map(([name]) => ({ id: name, label: name, answer: `${name} is listed among MBNP at Law's business connections.` })), footerLink: ['./collaborations.html', 'View collaborations'] },
+  { id: 'consultation', label: 'Contact MBNP', title: 'Choose how to reach us', choices: [
+    { id: 'whatsapp', label: 'WhatsApp', answer: 'Start a conversation with the MBNP team on WhatsApp.', href: 'https://wa.me/6287777102030?text=Hello%20MBNP%20at%20Law%2C%20I%20would%20like%20to%20ask%20about%20your%20legal%20services.', link: 'Open WhatsApp', external: true },
+    { id: 'contact-form', label: 'Contact form', answer: 'Send a general inquiry through our contact page.', href: './contact.html', link: 'Open contact page' },
+    { id: 'email', label: 'Email', answer: 'Email us at info@mbnp.co.id.', href: 'mailto:info@mbnp.co.id', link: 'Write an email' },
   ] },
 ]
 
@@ -171,12 +171,12 @@ function InformationGuide() {
   return (
     <div className="information-guide">
       {open && (
-        <section className="guide-panel" aria-label="Panduan informasi MBNP">
+        <section className="guide-panel" aria-label="MBNP information guide">
           <div className="guide-heading">
-            <div><p className="eyebrow">Panduan informasi</p><h2>{selectedMenu?.title || 'Bagaimana kami dapat membantu?'}</h2></div>
-            <button className="guide-close" type="button" onClick={() => setOpen(false)} aria-label="Tutup panduan">{'×'}</button>
+            <div><p className="eyebrow">Information guide</p><h2>{selectedMenu?.title || 'How can we help?'}</h2></div>
+            <button className="guide-close" type="button" onClick={() => setOpen(false)} aria-label="Close guide">{'×'}</button>
           </div>
-          <p className="guide-note">{topic ? 'Pilih salah satu opsi untuk melihat informasi terkait.' : 'Pilih topik untuk membuka pilihan yang sesuai.'}</p>
+          <p className="guide-note">{topic ? 'Choose an option to see more information.' : 'Choose a topic to see the available options.'}</p>
           {!selectedMenu ? (
             <div className="guide-options">
               {guideMenus.map((item) => <button key={item.id} type="button" onClick={() => chooseTopic(item.id)}>{item.label}<span aria-hidden="true">{'›'}</span></button>)}
@@ -192,15 +192,15 @@ function InformationGuide() {
             </div>
           )}
           <div className="guide-whatsapp">
-            <p>Perlu bantuan lebih lanjut?</p>
-            <a href="https://wa.me/6287777102030?text=Halo%20MBNP%20at%20Law%2C%20saya%20ingin%20berbicara%20dengan%20tim." target="_blank" rel="noreferrer">Lanjutkan ke WhatsApp <Arrow /></a>
+            <p>Need more help?</p>
+            <a href="https://wa.me/6287777102030?text=Hello%20MBNP%20at%20Law%2C%20I%20would%20like%20to%20speak%20with%20your%20team." target="_blank" rel="noreferrer">Continue on WhatsApp <Arrow /></a>
           </div>
-          <small className="guide-disclaimer">Panduan ini memuat informasi umum dan bukan nasihat hukum.</small>
+          <small className="guide-disclaimer">This guide shares general information, not legal advice.</small>
         </section>
       )}
       <button className="guide-trigger" type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)}>
         <span className="guide-trigger-icon" aria-hidden="true">{open ? '×' : '?'}</span>
-        <span>{open ? 'Tutup panduan' : 'Panduan MBNP'}</span>
+        <span>{open ? 'Close guide' : 'MBNP guide'}</span>
       </button>
     </div>
   )
@@ -219,8 +219,8 @@ function TeamCards({ limit }) {
   return (
     <div className="team-grid">
       {team.slice(0, limit || team.length).map(([name, role, image, slug]) => (
-        <a className="team-card" href={`./profile.html?person=${slug}`} key={name} aria-label={`Lihat profil ${name}`}>
-        <img src={`./assets/${image}`} alt={`Foto ${name}`} loading="lazy" />
+        <a className="team-card" href={`./profile.html?person=${slug}`} key={name} aria-label={`View ${name}'s profile`}>
+        <img src={`./assets/${image}`} alt={`Portrait of ${name}`} loading="lazy" />
           <div className="team-card-heading"><div><h3>{name}</h3><p>{role}</p></div><Arrow /></div>
         </a>
       ))}
@@ -247,8 +247,8 @@ function parseGdeltDate(value) {
 
 function displayNewsDate(value) {
   const date = parseGdeltDate(value)
-  if (!date || Number.isNaN(date.getTime())) return 'Sumber resmi'
-  return new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)
+  if (!date || Number.isNaN(date.getTime())) return 'Official source'
+  return new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)
 }
 
 function useNewsFeed(topic, limit) {
@@ -320,7 +320,7 @@ function NewsCards({ topic = 'all', limit = 6 }) {
 
   return (
     <>
-      {status === 'fallback' && <p className="news-notice" role="status">Berita langsung sedang tidak tersedia. Silakan kunjungi sumber resmi berikut untuk memperoleh informasi hukum dan regulasi Indonesia.</p>}
+      {status === 'fallback' && <p className="news-notice" role="status">Live news is not available right now. Visit these official sources for Indonesian legal and regulatory updates.</p>}
       <div className="news-grid">
         {articles.map((article, index) => (
           <a className="news-card" href={article.url} target="_blank" rel="noreferrer" key={`${article.url}-${index}`}>
@@ -329,9 +329,9 @@ function NewsCards({ topic = 'all', limit = 6 }) {
               <span>{String(index + 1).padStart(2, '0')}</span>
             </div>
             <div className="news-card-copy">
-              <p className="news-meta"><span>{article.domain || article.sourcecountry || 'Sumber berita'}</span><span>{displayNewsDate(article.seendate)}</span></p>
+          <p className="news-meta"><span>{article.domain || article.sourcecountry || 'News source'}</span><span>{displayNewsDate(article.seendate)}</span></p>
               <h3>{article.title}</h3>
-              <span className="news-read">Baca berita selengkapnya <Arrow /></span>
+          <span className="news-read">Read the full story <Arrow /></span>
             </div>
           </a>
         ))}
@@ -364,41 +364,41 @@ function Home() {
         </video>
         <div className="hero-shade" aria-hidden="true" />
         <div className="hero-copy">
-          <p className="eyebrow">Konsultan hukum independen · Jakarta</p>
-          <h1>Pendampingan hukum yang jelas untuk keputusan penting.</h1>
-          <p>Dukungan hukum yang strategis dan praktis bagi perusahaan dalam menghadapi dinamika usaha di Indonesia.</p>
+          <p className="eyebrow">Independent law firm · Jakarta</p>
+          <h1>Clear legal support for important decisions.</h1>
+          <p>Practical legal advice for companies facing business challenges in Indonesia.</p>
           <div className="hero-actions">
-            <a className="button light-button" href="./about.html">Kenali MBNP <Arrow /></a>
-            <a className="hero-text-link" href="./expertise.html">Lihat layanan <Arrow /></a>
+            <a className="button light-button" href="./about.html">Meet MBNP <Arrow /></a>
+            <a className="hero-text-link" href="./expertise.html">Explore services <Arrow /></a>
           </div>
         </div>
-        <div className="hero-caption"><span>Jakarta</span><span>Indonesia · Mengutamakan tujuan</span></div>
+        <div className="hero-caption"><span>Jakarta</span><span>Indonesia · Business-focused</span></div>
       </section>
 
       <section className="section intro-grid">
-        <p className="eyebrow">Tentang firma</p>
+        <p className="eyebrow">About the firm</p>
         <div>
-          <h2>Memahami Indonesia. Mengerti kebutuhan usaha.</h2>
-          <p className="lead">Masdiyono Bahri Novriama and Partners at Law adalah firma hukum independen yang berkedudukan di Jakarta.</p>
-          <a className="text-link" href="./about.html">Pendekatan kami <Arrow /></a>
+          <h2>We understand Indonesia and your business.</h2>
+          <p className="lead">Masdiyono Bahri Novriama and Partners at Law is an independent law firm based in Jakarta.</p>
+          <a className="text-link" href="./about.html">Our approach <Arrow /></a>
         </div>
       </section>
 
-      <section className="section home-pathways" aria-label="Jelajahi MBNP">
+      <section className="section home-pathways" aria-label="Explore MBNP">
         <a className="pathway-card" href="./expertise.html">
-          <img src="./assets/editorial-corporate.jpg" alt="Perencanaan hukum korporasi" />
-          <div><p className="eyebrow">Layanan kami</p><h2>Nasihat hukum yang memahami kebutuhan komersial.</h2><span>Lihat bidang layanan <Arrow /></span></div>
+          <img src="./assets/editorial-corporate.jpg" alt="Corporate legal planning" />
+          <div><p className="eyebrow">Our services</p><h2>Legal advice that supports your business.</h2><span>Explore our services <Arrow /></span></div>
         </a>
         <a className="pathway-card" href="./people.html">
-          <img src="./assets/editorial-about-firm.jpg" alt="Para profesional hukum berdiskusi" />
-          <div><p className="eyebrow">Tim kami</p><h2>Kenali para profesional di balik layanan kami.</h2><span>Kenali tim MBNP <Arrow /></span></div>
+          <img src="./assets/editorial-about-firm.jpg" alt="Legal professionals in discussion" />
+          <div><p className="eyebrow">Our people</p><h2>Meet the people behind our work.</h2><span>Meet the MBNP team <Arrow /></span></div>
         </a>
       </section>
 
       <section className="section insights-preview">
         <div className="section-heading">
-          <div><p className="eyebrow">Wawasan terkini</p><h2>Perkembangan hukum dan bisnis yang perlu diketahui.</h2></div>
-          <a className="text-link" href="./insights.html">Lihat semua wawasan <Arrow /></a>
+          <div><p className="eyebrow">Latest insights</p><h2>Legal and business updates that matter.</h2></div>
+          <a className="text-link" href="./insights.html">View all insights <Arrow /></a>
         </div>
         <NewsCards limit={2} />
       </section>
@@ -410,19 +410,19 @@ function Home() {
 function About() {
   return (
     <>
-      <PageIntro eyebrow="Tentang MBNP" title="Nasihat praktis dengan tujuan yang jelas." text="Kami memadukan pemahaman hukum Indonesia dengan wawasan atas keputusan komersial yang dihadapi klien." />
+      <PageIntro eyebrow="About MBNP" title="Practical advice with a clear purpose." text="We combine knowledge of Indonesian law with an understanding of our clients' business needs." />
       <section className="section image-copy">
-        <img src="./assets/editorial-about-firm.jpg" alt="Para profesional hukum berkolaborasi di kantor Jakarta" />
+        <img src="./assets/editorial-about-firm.jpg" alt="Legal professionals working together in a Jakarta office" />
         <div>
-          <p className="eyebrow">Pendekatan kami</p><h2>Mengutamakan kejelasan.</h2>
-          <p>Layanan kami disusun secara strategis, praktis, efisien, terarah, dan bernilai. Kami mendengarkan kebutuhan klien, berkomunikasi secara terbuka, serta menyusun nasihat hukum dengan berorientasi pada hasil yang dibutuhkan.</p>
-          <p>Dari kantor kami di Jakarta, kami mendampingi perusahaan nasional dan internasional dalam perkara sengketa, transaksi, perizinan, ketenagakerjaan, dan keimigrasian.</p>
+          <p className="eyebrow">Our approach</p><h2>We make the law clear.</h2>
+          <p>We give practical and focused advice. We listen, communicate clearly, and work toward the results our clients need.</p>
+          <p>From our Jakarta office, we advise Indonesian and international companies on disputes, transactions, licensing, employment, and immigration matters.</p>
         </div>
       </section>
       <section className="section soft-section">
-        <p className="eyebrow">Prinsip kami</p>
+        <p className="eyebrow">Our values</p>
         <div className="principle-grid">
-          {['Keunggulan profesional', 'Integritas dan transparansi', 'Strategi yang berorientasi pada klien'].map((item, index) => (
+          {['Professional excellence', 'Integrity and transparency', 'Client-focused solutions'].map((item, index) => (
             <article key={item}><span>0{index + 1}</span><h3>{item}</h3></article>
           ))}
         </div>
@@ -435,10 +435,10 @@ function About() {
 function Expertise() {
   return (
     <>
-      <PageIntro eyebrow="Layanan kami" title="Keahlian hukum yang selaras dengan kebutuhan usaha." text="Nasihat hukum yang mempertimbangkan pokok persoalan, konteks komersial, dan hasil yang ingin dicapai." />
+      <PageIntro eyebrow="Our services" title="Legal support for your business needs." text="We consider the legal issue, your business, and the result you want to achieve." />
       <section className="expertise-visual">
-        <img src="./assets/editorial-corporate.jpg" alt="Dokumen perencanaan hukum korporasi dan komersial" />
-        <div><p className="eyebrow">Perspektif komersial</p><p>Setiap pendampingan dimulai dengan memahami kebutuhan di balik persoalan hukum.</p></div>
+        <img src="./assets/editorial-corporate.jpg" alt="Corporate and commercial legal planning documents" />
+        <div><p className="eyebrow">Business perspective</p><p>We start by understanding the business needs behind each legal issue.</p></div>
       </section>
       <section className="section service-grid">
         {services.map(([title, description], index) => (
@@ -453,12 +453,12 @@ function Expertise() {
 function Collaborations() {
   return (
     <>
-      <PageIntro eyebrow="Kolaborasi" title="Bersama membangun langkah ke depan." text="Kami menghargai hubungan profesional jangka panjang dan kolaborasi yang dilandasi kejelasan, ketanggapan, serta tujuan bersama." />
+      <PageIntro eyebrow="Collaborations" title="Working together to move forward." text="We value long-term professional relationships built on clear communication, responsiveness, and shared goals." />
       <section className="section collaboration-page">
         <div className="collaboration-copy">
-          <p className="eyebrow">Jaringan kolaborasi</p>
-          <h2>Hubungan profesional yang dibangun dengan kepercayaan.</h2>
-          <p>Setiap hubungan profesional dijalankan dengan menjaga kerahasiaan dan memahami konteks komersial yang melatarbelakangi setiap perkara.</p>
+          <p className="eyebrow">Our network</p>
+          <h2>Professional relationships built on trust.</h2>
+          <p>We value confidentiality and take time to understand the business context behind each matter.</p>
         </div>
         <CollaborationLogos />
       </section>
@@ -470,7 +470,7 @@ function Collaborations() {
 function People() {
   return (
     <>
-      <PageIntro eyebrow="Tim kami" title="Pengalaman untuk mendampingi Anda." text="Kenali para profesional MBNP. Pilih profil untuk melihat informasi dan bidang keahlian masing-masing." />
+      <PageIntro eyebrow="Our people" title="Experienced professionals by your side." text="Meet the MBNP team. Select a profile to learn more about each person." />
       <section className="section people-section"><TeamCards /></section>
       <ContactCallout />
     </>
@@ -487,31 +487,31 @@ function Profile() {
       <section className="profile-hero">
         <div className="profile-photo"><img src={`./assets/${image}`} alt={name} /></div>
         <div className="profile-heading">
-          <p className="eyebrow">Tim kami</p>
+          <p className="eyebrow">Our people</p>
           <h1>{name}</h1>
           <p className="profile-role">{role}</p>
-          <p className="profile-summary">Biografi profesional {name} sedang disiapkan dan akan ditampilkan setelah mendapat persetujuan.</p>
-          <a className="text-link light-link" href={`mailto:${CONTACT_EMAIL}`}>Hubungi MBNP <Arrow /></a>
+          <p className="profile-summary">A professional biography for {name} will be added after it is approved.</p>
+          <a className="text-link light-link" href={`mailto:${CONTACT_EMAIL}`}>Contact MBNP <Arrow /></a>
         </div>
       </section>
 
       <section className="section profile-content">
         <div className="profile-main">
-          <p className="eyebrow">Biografi</p>
-          <h2>Informasi profil sedang disiapkan.</h2>
-          <p>Halaman ini disiapkan untuk memuat biografi yang telah disetujui, bidang keahlian, pengalaman terpilih, pendidikan, keanggotaan profesi, dan kontak masing-masing.</p>
+          <p className="eyebrow">Biography</p>
+          <h2>Profile details are being prepared.</h2>
+          <p>This page will include an approved biography, areas of practice, selected experience, education, professional memberships, and contact details.</p>
           <div className="profile-detail-grid">
-            {['Bidang keahlian', 'Pengalaman terpilih', 'Pendidikan dan keanggotaan profesi'].map((label) => (
-              <div key={label}><span>{label}</span><p>Informasi akan ditambahkan setelah dikonfirmasi.</p></div>
+            {['Areas of practice', 'Selected experience', 'Education and memberships'].map((label) => (
+              <div key={label}><span>{label}</span><p>Details will be added after they are confirmed.</p></div>
             ))}
           </div>
         </div>
         <aside className="business-card-panel">
-          <p className="eyebrow">Kartu nama digital</p>
-          <h2>Simpan informasi kontak.</h2>
-          <p>Kartu nama digital dapat diunduh setelah nomor telepon, alamat surel, jabatan, dan desain final disetujui.</p>
-          <button className="button disabled-button" type="button" disabled>Unduh kartu nama <span>Segera hadir</span></button>
-          <small>Disiapkan dalam format PDF dan vCard.</small>
+          <p className="eyebrow">Digital business card</p>
+          <h2>Save contact details.</h2>
+          <p>Business cards will be available after the phone number, email, title, and final design are approved.</p>
+          <button className="button disabled-button" type="button" disabled>Download business card <span>Coming soon</span></button>
+          <small>Planned formats: PDF and vCard.</small>
         </aside>
       </section>
       <ContactCallout />
@@ -524,14 +524,14 @@ function Insights() {
 
   return (
     <>
-      <PageIntro eyebrow="Wawasan" title="Memahami perkembangan hukum terkini." text="Pilihan berita terbaru mengenai hukum, regulasi, dan bisnis di Indonesia dari berbagai sumber berita." />
+      <PageIntro eyebrow="Insights" title="Follow the latest legal developments." text="Recent news about law, regulation, and business in Indonesia from a range of sources." />
       <section className="section insights-section">
         <div className="insights-toolbar">
           <div>
-            <p className="eyebrow">Berita terkini</p>
-            <h2>Ikuti perkembangan terbaru.</h2>
+            <p className="eyebrow">Latest news</p>
+            <h2>Stay up to date.</h2>
           </div>
-          <div className="topic-filters" aria-label="Saring berita berdasarkan topik">
+          <div className="topic-filters" aria-label="Filter news by topic">
             {Object.entries(newsTopics).map(([id, [label]]) => (
               <button type="button" className={topic === id ? 'active' : ''} aria-pressed={topic === id} onClick={() => setTopic(id)} key={id}>{label}</button>
             ))}
@@ -539,8 +539,8 @@ function Insights() {
         </div>
         <NewsCards topic={topic} limit={9} />
         <div className="news-disclosure">
-          <p><strong>Tentang berita ini</strong></p>
-          <p>Judul berita diperoleh dari indeks berita GDELT dan tautannya mengarah ke situs penerbit asli. MBNP tidak bertanggung jawab atas isi situs pihak ketiga. Informasi ini bukan merupakan nasihat hukum. Berita diperbarui secara otomatis setiap 30 menit.</p>
+          <p><strong>About this news</strong></p>
+          <p>Headlines come from the GDELT news index and link to the original publisher. MBNP is not responsible for third-party content. This information is not legal advice. News updates every 30 minutes.</p>
         </div>
       </section>
       <ContactCallout />
@@ -554,56 +554,56 @@ function Contact() {
   const openEmailDraft = (event) => {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
-    const subject = `Pertanyaan melalui situs web — ${form.get('service') || 'Konsultasi umum'}`
+    const subject = `Website inquiry — ${form.get('service') || 'General inquiry'}`
     const body = [
-      `Nama: ${form.get('name')}`,
-      `Alamat surel: ${form.get('email')}`,
-      `Nomor telepon: ${form.get('phone') || '-'}`,
-      `Bidang konsultasi: ${form.get('service') || 'Konsultasi umum'}`,
+      `Name: ${form.get('name')}`,
+      `Email: ${form.get('email')}`,
+      `Phone: ${form.get('phone') || '-'}`,
+      `Service: ${form.get('service') || 'General inquiry'}`,
       '',
-      'Uraian kebutuhan:',
+      'How can we help?',
       form.get('message'),
     ].join('\n')
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.open(gmailUrl, '_blank', 'noopener,noreferrer')
-    setFormStatus(`Draf Gmail untuk ${CONTACT_EMAIL} telah dibuka.`)
+    setFormStatus(`A Gmail draft to ${CONTACT_EMAIL} is ready.`)
   }
 
   return (
     <>
-      <PageIntro eyebrow="Kontak" title="Mari berdiskusi." text="Sampaikan kebutuhan Anda. Tim kami akan membantu menentukan langkah selanjutnya." />
+      <PageIntro eyebrow="Contact" title="Let's talk." text="Tell us what you need. Our team will help you plan the next step." />
       <section className="section contact-grid">
         <div className="contact-information">
           <div>
-            <p className="eyebrow">Kunjungi kami</p><h2>Jakarta</h2>
+            <p className="eyebrow">Visit us</p><h2>Jakarta</h2>
             <p>Menara Cakrawala, 12th Floor, Unit 5A<br />Jl. M.H. Thamrin No. Kav. 9<br />Menteng, Central Jakarta 10340</p>
-            <a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Menara+Cakrawala+Jl.+M.H.+Thamrin+No.+Kav.+9+Jakarta" target="_blank" rel="noreferrer">Buka peta <Arrow /></a>
+            <a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Menara+Cakrawala+Jl.+M.H.+Thamrin+No.+Kav.+9+Jakarta" target="_blank" rel="noreferrer">Open map <Arrow /></a>
           </div>
           <div className="direct-contact">
-            <p className="eyebrow">Informasi kontak</p>
+            <p className="eyebrow">Contact details</p>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
             <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">+62 877 7710 2030</a>
           </div>
         </div>
         <form className="contact-form" onSubmit={openEmailDraft}>
-          <div className="form-heading"><p className="eyebrow">Kirim pertanyaan</p><h2>Apa yang dapat kami bantu?</h2></div>
+          <div className="form-heading"><p className="eyebrow">Send an inquiry</p><h2>How can we help?</h2></div>
           <div className="form-row">
-            <label>Nama lengkap<input name="name" type="text" autoComplete="name" required placeholder="Nama Anda" /></label>
-            <label>Alamat surel<input name="email" type="email" autoComplete="email" required placeholder="nama@perusahaan.com" /></label>
+            <label>Full name<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label>
+            <label>Email address<input name="email" type="email" autoComplete="email" required placeholder="name@company.com" /></label>
           </div>
           <div className="form-row">
-            <label>Nomor telepon<input name="phone" type="tel" autoComplete="tel" placeholder="+62" /></label>
-            <label>Bidang yang ingin dikonsultasikan
+            <label>Phone number<input name="phone" type="tel" autoComplete="tel" placeholder="+62" /></label>
+            <label>Service you need
               <select name="service" defaultValue="">
-                <option value="">Konsultasi umum</option>
+                <option value="">General inquiry</option>
                 {services.map(([service]) => <option key={service} value={service}>{service}</option>)}
               </select>
             </label>
           </div>
-          <label>Uraian kebutuhan<textarea name="message" rows="5" required placeholder="Jelaskan secara singkat kebutuhan Anda." /></label>
+          <label>How can we help?<textarea name="message" rows="5" required placeholder="Briefly tell us what you need." /></label>
           <div className="form-submit">
-            <button className="button" type="submit">Kirim melalui Gmail <Arrow /></button>
-            <p>Pesan akan dibuka sebagai draf Gmail yang ditujukan ke {CONTACT_EMAIL}.</p>
+            <button className="button" type="submit">Send with Gmail <Arrow /></button>
+            <p>This will open a Gmail draft addressed to {CONTACT_EMAIL}.</p>
           </div>
           {formStatus && <p className="form-status" role="status">{formStatus}</p>}
         </form>
@@ -615,8 +615,8 @@ function Contact() {
 function ContactCallout() {
   return (
     <section className="contact-callout">
-      <p className="eyebrow">Mari berdiskusi</p><h2>Bagaimana kami dapat membantu Anda?</h2>
-      <a className="button light-button" href="./contact.html">Hubungi tim kami <Arrow /></a>
+      <p className="eyebrow">Let's talk</p><h2>How can we help?</h2>
+      <a className="button light-button" href="./contact.html">Contact our team <Arrow /></a>
     </section>
   )
 }
